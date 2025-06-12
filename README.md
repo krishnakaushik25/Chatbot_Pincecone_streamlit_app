@@ -126,35 +126,59 @@ pip install -r requirements.txt
    - Set the main file path to `app.py`
    - Choose a custom URL (optional)
 
-4. **Configure Environment Variables**
-   - In the Streamlit Cloud dashboard, go to your app settings
-   - Navigate to the "Secrets" section
+4. **Configure Environment Variables (Secrets)**
+   - After deployment, go to your app in the Streamlit Cloud dashboard
+   - Click on your app name to open the app management page
+   - Click on the **"Settings"** button (⚙️) in the top right
+   - Navigate to the **"Secrets"** tab in the settings panel
    - Add your environment variables in TOML format:
      ```toml
      ENDPOINT = "https://your-api-endpoint.com"
      ```
+   - Click **"Save"** to apply the secrets
+   - Your app will automatically restart with the new configuration
 
 5. **Deploy**
    - Click "Deploy!"
    - Wait for the deployment to complete
    - Your app will be available at the provided URL
 
-### Alternative: Using Streamlit Cloud Secrets
+### Managing Secrets in Streamlit Cloud
 
-Instead of using a `.env` file in production, Streamlit Cloud uses secrets management. Update your `app.py` to handle both local `.env` files and Streamlit secrets:
+Your application is configured to read the `ENDPOINT` from Streamlit secrets in production. Here's how to manage secrets:
 
-```python
-# In your app.py, modify the endpoint loading:
-import streamlit as st
+#### Adding/Updating Secrets:
+1. **Access App Settings**
+   - Go to [https://share.streamlit.io](https://share.streamlit.io)
+   - Sign in and navigate to your apps
+   - Click on your app name
 
-# Load environment variables
-load_dotenv()
+2. **Open Settings**
+   - Click the **"Settings"** button (⚙️) in the top-right corner
+   - Select the **"Secrets"** tab
 
-def get_endpoint():
-    # Try Streamlit secrets first, then fall back to .env
-    endpoint = st.secrets.get("ENDPOINT") or os.getenv('ENDPOINT')
-    return endpoint
-```
+3. **Configure Secrets**
+   - Add your secrets in TOML format:
+     ```toml
+     # API Configuration
+     ENDPOINT = "https://your-api-endpoint.com"
+     
+     # Add other secrets as needed
+     # API_KEY = "your-api-key"
+     # DATABASE_URL = "your-database-url"
+     ```
+
+4. **Save and Deploy**
+   - Click **"Save"**
+   - Your app will automatically restart with the new configuration
+   - Monitor the deployment logs for any issues
+
+#### Important Notes:
+- **TOML Format**: Streamlit Cloud uses TOML format for secrets, not `.env` format
+- **Quotes Required**: Always wrap string values in quotes
+- **No Comments in Production**: Remove comment lines when deploying
+- **Case Sensitive**: Variable names are case-sensitive
+- **Automatic Restart**: Apps restart automatically when secrets are updated
 
 ## Project Structure
 
@@ -173,9 +197,11 @@ pdf-assistant-chatbot/
 
 ### Environment Variables
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `ENDPOINT` | Your API backend URL | Yes |
+| Variable | Description | Required | Local (.env) | Cloud (Secrets) |
+|----------|-------------|----------|--------------|-----------------|
+| `ENDPOINT` | Your API backend URL | Yes | `ENDPOINT=https://your-api-endpoint.com` | `ENDPOINT = "https://your-api-endpoint.com"` |
+
+**Note**: The application automatically detects whether it's running locally (uses `.env`) or on Streamlit Cloud (uses secrets).
 
 ### API Requirements
 
@@ -230,6 +256,15 @@ Your API backend should provide:
 - **Windows**: If `venv\Scripts\Activate.ps1` fails, try `venv\Scripts\activate.bat`
 - **macOS/Linux**: If `source venv/bin/activate` fails, ensure you're using the correct shell (bash/zsh)
 - **All platforms**: Verify Python is installed and accessible via `python --version`
+
+**7. Streamlit Cloud secrets configuration**
+- Error: App fails to start with "ENDPOINT environment variable not set" on Streamlit Cloud
+- Solution: 
+  1. Go to your app settings on Streamlit Cloud
+  2. Navigate to the "Secrets" tab
+  3. Add: `ENDPOINT = "https://your-api-endpoint.com"`
+  4. Save and wait for app restart
+- **Format**: Use TOML format with quotes, not `.env` format
 
 ### Logs
 

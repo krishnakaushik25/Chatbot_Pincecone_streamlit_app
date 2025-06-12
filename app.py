@@ -97,7 +97,7 @@ class APIClient:
     
     def _validate_endpoint(self) -> str:
         """Validate and return the API endpoint"""
-        endpoint = os.getenv('ENDPOINT')
+        endpoint = st.secrets.get("ENDPOINT") or os.getenv('ENDPOINT')
         
         if not endpoint:
             error = ConfigurationError(
