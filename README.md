@@ -23,7 +23,7 @@ A Streamlit-based chatbot application that allows users to upload PDF documents 
 ### 1. Clone the Repository
 
 ```bash
-git clone <your-repository-url>
+git clone https://github.com/vijender883/Chatbot_Pincecone_streamlit_app
 cd pdf-assistant-chatbot
 ```
 
