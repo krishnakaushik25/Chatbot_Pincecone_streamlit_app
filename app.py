@@ -425,11 +425,6 @@ class ChatUI:
                 "Error displaying chat history"
             )
     
-    def display_suggested_questions(self):
-        """Display suggested questions as clickable buttons with error handling"""
-        # Suggested questions functionality removed
-        pass
-    
     def _handle_user_input(self, user_input: str):
         """Process user input and get response with comprehensive error handling"""
         try:
